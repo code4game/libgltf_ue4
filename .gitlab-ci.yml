@@ -58,8 +58,9 @@ compile_gltf.linux:
     stage: build
     script:
         - 'rm -rf output'
-        - 'cd external/gltf'
+        - 'cd external/libgltf'
         - 'rm -rf build'
+        - 'rm -rf output'
         - 'mkdir build'
         - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
@@ -82,13 +83,13 @@ compile_gltf.macos:
     stage: build
     script:
         - 'rm -rf output'
-        - 'cd external/gltf'
+        - 'cd external/libgltf'
         - 'rm -rf build'
+        - 'rm -rf output'
         - 'mkdir build'
         - 'cd build'
         - 'cmake -G "Unix Makefiles" ../'
-        - 'make gltfdec'
-        - 'make gltfenc'
+        - 'make libgltf'
         - 'cd ../../../'
         - 'mkdir -p output/lib/macos'
         - 'cp -v external/libgltf/output/lib/macos/libgltf.a output/lib/macos/'
@@ -107,14 +108,14 @@ compile_gltf.ios:
     stage: build
     script:
         - 'rm -rf output'
-        - 'cd external/gltf'
+        - 'cd external/libgltf'
         - 'rm -rf build'
+        - 'rm -rf output'
         - 'mkdir build'
         - 'cd build'
         - 'cmake -DCMAKE_TOOLCHAIN_FILE=../../../external/ios-cmake/toolchain/iOS.cmake ../'
         - 'make libgltf'
-        - 'cd ../'
-        - 'cd ../../'
+        - 'cd ../../../'
         - 'mkdir -p output/lib/ios'
         - 'cp -v external/libgltf/output/lib/ios/libgltf.a output/lib/ios'
     artifacts:
