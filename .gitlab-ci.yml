@@ -1,0 +1,217 @@
+variables:
+    GIT_SUBMODULE_STRATEGY: "recursive"
+
+before_script:
+    - git lfs fetch
+    - git lfs checkout
+
+after_script:
+    - echo log-after_script
+
+stages:
+    - check
+    - build
+    - package
+    - deploy
+
+check:
+    stage: check
+    script:
+        - echo check
+        #- 'cppcheck . --enable=warning,style,performance,portability --xml-version=2 --error-exitcode=1 -i external/ -i build/ -i libgltf_ue4/'
+    tags:
+        - cppcheck
+
+compile_gltf.windows:
+    stage: build
+    script:
+        - 'if exist output rmdir /s /q output'
+        - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
+        - 'cd external/libgltf'
+        - 'if exist build32vs2015 rmdir /s /q build32vs2015'
+        - 'mkdir build32vs2015'
+        - 'cd build32vs2015'
+        - 'cmake -G "Visual Studio 14 2015" ../'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="Win32"'
+        - 'cd ../'
+        - 'if exist build64vs2015 rmdir /s /q build64vs2015'
+        - 'mkdir build64vs2015'
+        - 'cd build64vs2015'
+        - 'cmake -G "Visual Studio 14 2015 Win64" ../'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="x64"'
+        - 'cd ../../../'
+        - 'xcopy external\libgltf\output\lib\win32\*.lib output\lib\win32\vs2015\ /s /r /y'
+        - 'xcopy external\libgltf\output\lib\win64\*.lib output\lib\win64\vs2015\ /s /r /y'
+    artifacts:
+        name: "libgltf.windows.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - output\lib\*
+    tags:
+        - win32
+        - win64
+        - cmake
+        - vs2015
+
+compile_gltf.linux:
+    stage: build
+    script:
+        - 'rm -rf output'
+        - 'cd external/libgltf'
+        - 'rm -rf build'
+        - 'rm -rf output'
+        - 'mkdir build'
+        - 'cd build'
+        - 'cmake -G "Unix Makefiles" ../'
+        - 'make libgltf'
+        - 'cd ../../../'
+        - 'mkdir -p output/lib/linux'
+        - 'cp -v external/libgltf/output/lib/linux/libgltf.a output/lib/linux/'
+    artifacts:
+        name: "libgltf.linux.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - output/lib/*
+    tags:
+        - linux
+        - gcc
+        - cmake
+        - make
+
+compile_gltf.macos:
+    stage: build
+    script:
+        - 'rm -rf output'
+        - 'cd external/libgltf'
+        - 'rm -rf build'
+        - 'rm -rf output'
+        - 'mkdir build'
+        - 'cd build'
+        - 'cmake -G "Unix Makefiles" ../'
+        - 'make libgltf'
+        - 'cd ../../../'
+        - 'mkdir -p output/lib/macos'
+        - 'cp -v external/libgltf/output/lib/macos/libgltf.a output/lib/macos/'
+    artifacts:
+        name: "libgltf.macos.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - output/lib/*
+    tags:
+        - macos
+        - gcc
+        - cmake
+        - make
+
+compile_gltf.ios:
+    stage: build
+    script:
+        - 'rm -rf output'
+        - 'cd external/libgltf'
+        - 'rm -rf build'
+        - 'rm -rf output'
+        - 'mkdir build'
+        - 'cd build'
+        - 'cmake -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/toolchain/iOS.cmake ../'
+        - 'make libgltf'
+        - 'cd ../../../'
+        - 'mkdir -p output/lib/ios'
+        - 'cp -v external/libgltf/output/lib/macos/libgltf.a output/lib/ios'
+    artifacts:
+        name: "libgltf.ios.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - output/lib/*
+    tags:
+        - macos
+        - gcc
+        - cmake
+        - make
+
+package_ue4.10:
+    stage: package
+    script:
+        - 'xcopy README.md libgltf_ue4\README.md* /r /y'
+        - 'xcopy LICENSE.md libgltf_ue4\LICENSE.md* /r /y'
+        - 'xcopy libgltf_ue4.10.Build.cs libgltf_ue4\libgltf_ue4.Build.cs* /r /y'
+        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.0\include\libgltf\ /s/r/y'
+        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.0\lib\ /s /r /y'
+    dependencies:
+        - compile_gltf.windows
+        - compile_gltf.linux
+        - compile_gltf.macos
+        - compile_gltf.ios
+    artifacts:
+        name: "libgltf_ue4.10.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - libgltf_ue4/*
+    tags:
+        - win32
+        - win64
+
+libgltf_ue4.10:
+    stage: deploy
+    script:
+        - 'mkdir $CI_JOB_NAME'
+        - 'mv ./libgltf_ue4 ./$CI_JOB_NAME'
+        - 'butler login'
+        - 'butler push ./$CI_JOB_NAME c4gio/libgltf-ue4:ue4.10'
+        - 'butler logout'
+    artifacts:
+        name: "$CI_JOB_NAME.$CI_PIPELINE_ID"
+        expire_in: 1 month
+        paths:
+            - $CI_JOB_NAME/*
+    when: manual
+    dependencies:
+        - package_ue4.10
+    tags:
+        - linux
+        - python
+        - itchio
+        - butler
+
+package_ue4.16:
+    stage: package
+    script:
+        - 'xcopy README.md libgltf_ue4\README.md* /r /y'
+        - 'xcopy LICENSE.md libgltf_ue4\LICENSE.md* /r /y'
+        - 'xcopy libgltf_ue4.16.Build.cs libgltf_ue4\libgltf_ue4.Build.cs* /r /y'
+        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.0\include\libgltf\ /s/r/y'
+        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.0\lib\ /s /r /y'
+    dependencies:
+        - compile_gltf.windows
+        - compile_gltf.linux
+        - compile_gltf.macos
+        - compile_gltf.ios
+    artifacts:
+        name: "libgltf_ue4.16.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - libgltf_ue4/*
+    tags:
+        - win32
+        - win64
+
+libgltf_ue4.16:
+    stage: deploy
+    script:
+        - 'mkdir $CI_JOB_NAME'
+        - 'mv ./libgltf_ue4 ./$CI_JOB_NAME'
+        - 'butler login'
+        - 'butler push ./$CI_JOB_NAME c4gio/libgltf-ue4:ue4.16'
+        - 'butler logout'
+    artifacts:
+        name: "$CI_JOB_NAME.$CI_PIPELINE_ID"
+        expire_in: 1 month
+        paths:
+            - $CI_JOB_NAME/*
+    when: manual
+    dependencies:
+        - package_ue4.16
+    tags:
+        - linux
+        - python
+        - itchio
+        - butler
