@@ -112,7 +112,7 @@ compile_gltf.ios:
         - 'rm -rf output'
         - 'mkdir build'
         - 'cd build'
-        - 'cmake -DCMAKE_TOOLCHAIN_FILE=../../../external/ios-cmake/toolchain/iOS.cmake ../'
+        - 'cmake -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/toolchain/iOS.cmake ../'
         - 'make libgltf'
         - 'cd ../../../'
         - 'mkdir -p output/lib/ios'
