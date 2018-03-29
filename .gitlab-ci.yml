@@ -116,7 +116,7 @@ compile_gltf.ios:
         - 'make libgltf'
         - 'cd ../../../'
         - 'mkdir -p output/lib/ios'
-        - 'cp -v external/libgltf/output/lib/ios/libgltf.a output/lib/ios'
+        - 'cp -v external/libgltf/output/lib/macos/libgltf.a output/lib/ios'
     artifacts:
         name: "libgltf.ios.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 1 month
