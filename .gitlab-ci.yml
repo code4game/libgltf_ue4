@@ -40,8 +40,8 @@ compile_gltf.windows:
         - 'cmake -G "Visual Studio 14 2015 Win64" ../'
         - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="x64"'
         - 'cd ../../../'
-        - 'xcopy external\libgltf\output\lib\win32\*.lib output\lib\win32\vs2015\ /s /r /y'
-        - 'xcopy external\libgltf\output\lib\win64\*.lib output\lib\win64\vs2015\ /s /r /y'
+        - 'xcopy external\libgltf\output\lib\win32\Release\*.lib output\lib\win32\vs2015\ /s /r /y'
+        - 'xcopy external\libgltf\output\lib\win64\Release\*.lib output\lib\win64\vs2015\ /s /r /y'
     artifacts:
         name: "libgltf.windows.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 1 month
