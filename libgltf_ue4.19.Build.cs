@@ -26,7 +26,7 @@ public class libgltf_ue4 : ModuleRules
                 break;
             }
 
-            string VSName = "vs" + WindowsPlatform.GetVisualStudioCompilerVersionName();
+            string VSName = "vs" + Target.WindowsPlatform.GetVisualStudioCompilerVersionName();
 
             LibPath = System.IO.Path.Combine(glTFPath, "lib", PlatformName, VSName);
 
