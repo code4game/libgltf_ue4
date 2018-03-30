@@ -134,8 +134,8 @@ package_ue4.10:
         - 'xcopy README.md libgltf_ue4\README.md* /r /y'
         - 'xcopy LICENSE.md libgltf_ue4\LICENSE.md* /r /y'
         - 'xcopy libgltf_ue4.10.Build.cs libgltf_ue4\libgltf_ue4.Build.cs* /r /y'
-        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.1\include\libgltf\ /s/r/y'
-        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.1\lib\ /s /r /y'
+        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.2\include\libgltf\ /s/r/y'
+        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.2\lib\ /s /r /y'
     dependencies:
         - compile_gltf.windows
         - compile_gltf.linux
@@ -178,8 +178,8 @@ package_ue4.16:
         - 'xcopy README.md libgltf_ue4\README.md* /r /y'
         - 'xcopy LICENSE.md libgltf_ue4\LICENSE.md* /r /y'
         - 'xcopy libgltf_ue4.16.Build.cs libgltf_ue4\libgltf_ue4.Build.cs* /r /y'
-        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.1\include\libgltf\ /s/r/y'
-        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.1\lib\ /s /r /y'
+        - 'xcopy external\libgltf\include\libgltf\*.* libgltf_ue4\libgltf-0.1.2\include\libgltf\ /s/r/y'
+        - 'xcopy output\lib\*.* libgltf_ue4\libgltf-0.1.2\lib\ /s /r /y'
     dependencies:
         - compile_gltf.windows
         - compile_gltf.linux
