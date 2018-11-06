@@ -1,6 +1,3 @@
 [submodule "external/libgltf"]
 	path = external/libgltf
 	url = https://github.com/code4game/libgltf.git
-[submodule "external/ios-cmake"]
-	path = external/ios-cmake
-	url = https://github.com/Yangqing/ios-cmake.git

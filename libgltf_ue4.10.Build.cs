@@ -1,6 +1,7 @@
 // Copyright (o) 2016-2018 Code 4 Game <develop@c4g.io>
 
 using UnrealBuildTool;
+using System.Collections.Generic;
 
 public class libgltf_ue4 : ModuleRules
 {
@@ -8,9 +9,9 @@ public class libgltf_ue4 : ModuleRules
     {
         Type = ModuleType.External;
 
-        string glTFPath = System.IO.Path.Combine(ModuleDirectory, "libgltf-0.1.3");
+        string glTFPath = System.IO.Path.Combine(ModuleDirectory, "libgltf-0.1.5");
         string IncludePath = System.IO.Path.Combine(glTFPath, "include");
-        string LibPath = "";
+        List<string> LibPaths = new List<string>();
         string LibFilePath = "";
 
         if ((Target.Platform == UnrealTargetPlatform.Win32) || (Target.Platform == UnrealTargetPlatform.Win64))
@@ -28,31 +29,51 @@ public class libgltf_ue4 : ModuleRules
 
             string VSName = "vs" + WindowsPlatform.GetVisualStudioCompilerVersionName();
 
-            LibPath = System.IO.Path.Combine(glTFPath, "lib", PlatformName, VSName);
+            string TargetConfiguration = "Release";
+            string TargetPostfix = "";
+            if (Target.Configuration == UnrealTargetConfiguration.Debug)
+            {
+                TargetConfiguration = "Debug";
+                TargetPostfix = "d";
+            }
 
-            LibFilePath = System.IO.Path.Combine(LibPath, "libgltf.lib");
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", PlatformName, VSName, TargetConfiguration));
+
+            LibFilePath = "libgltf" + TargetPostfix + ".lib";
         }
         else if (Target.Platform == UnrealTargetPlatform.Linux)
         {
-            LibPath = System.IO.Path.Combine(glTFPath, "lib", "linux");
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "linux"));
 
-            LibFilePath = System.IO.Path.Combine(LibPath, "libgltf.a");
+            LibFilePath = "libgltf.a";
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {
-            LibPath = System.IO.Path.Combine(glTFPath, "lib", "macos");
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "macos"));
 
-            LibFilePath = System.IO.Path.Combine(LibPath, "libgltf.a");
+            LibFilePath = "libgltf.a";
+        }
+        else if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "android", "armeabi-v7a"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "android", "armeabi-v7a-with-neon"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "android", "arm64-v8a"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "android", "x86"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "android", "x86_64"));
+
+            LibFilePath = "libgltf.a";
         }
         else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-            LibPath = System.IO.Path.Combine(glTFPath, "lib", "ios");
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "ios", "os"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "ios", "simulator"));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", "ios", "watchos"));
 
-            LibFilePath = System.IO.Path.Combine(LibPath, "libgltf.a");
+            LibFilePath = "libgltf.a";
         }
 
         PublicIncludePaths.Add(IncludePath);
-        PublicLibraryPaths.Add(LibPath);
+        PublicLibraryPaths.AddRange(LibPaths);
         PublicAdditionalLibraries.Add(LibFilePath);
     }
 }
