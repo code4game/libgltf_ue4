@@ -14,26 +14,13 @@ stages:
     - package
     - deploy
 
-compile.windows:
+compile.windows.vs2015:
     stage: build
     script:
         - 'if exist output rmdir /s /q output'
         - 'cd external/libgltf'
         - 'if exist build rmdir /s /q build'
         - 'mkdir build && cd build'
-        - 'mkdir vs2017 && cd vs2017'
-        - 'call "%VS2017COMNTOOLS%VsDevCmd.bat"'
-        - 'mkdir win32 && cd win32'
-        - 'cmake -G "Visual Studio 15 2017" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
-        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="Win32"'
-        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
-        - 'cd ../'
-        - 'mkdir win64 && cd win64'
-        - 'cmake -G "Visual Studio 15 2017 Win64" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
-        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="x64"'
-        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Debug" /p:Platform="x64"'
-        - 'cd ../'
-        - 'cd ../'
         - 'mkdir vs2015 && cd vs2015'
         - 'call "%VS140COMNTOOLS%VsDevCmd.bat"'
         - 'mkdir win32 && cd win32'
@@ -53,12 +40,8 @@ compile.windows:
         - 'xcopy external\libgltf\build\vs2015\win32\output\lib\win32\Debug\*.lib output\lib\win32\vs2015\Debug\ /s /r /y'
         - 'xcopy external\libgltf\build\vs2015\win64\output\lib\win64\Release\*.lib output\lib\win64\vs2015\Release\ /s /r /y'
         - 'xcopy external\libgltf\build\vs2015\win64\output\lib\win64\Debug\*.lib output\lib\win64\vs2015\Debug\ /s /r /y'
-        - 'xcopy external\libgltf\build\vs2017\win32\output\lib\win32\Release\*.lib output\lib\win32\vs2017\Release\ /s /r /y'
-        - 'xcopy external\libgltf\build\vs2017\win32\output\lib\win32\Debug\*.lib output\lib\win32\vs2017\Debug\ /s /r /y'
-        - 'xcopy external\libgltf\build\vs2017\win64\output\lib\win64\Release\*.lib output\lib\win64\vs2017\Release\ /s /r /y'
-        - 'xcopy external\libgltf\build\vs2017\win64\output\lib\win64\Debug\*.lib output\lib\win64\vs2017\Debug\ /s /r /y'
     artifacts:
-        name: "libgltf.windows.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        name: "libgltf.windows.vs2015.%CI_PIPELINE_ID%.%CI_JOB_ID%"
         expire_in: 1 month
         paths:
             - output\lib\*
@@ -67,6 +50,42 @@ compile.windows:
         - win64
         - cmake
         - vs2015
+
+compile.windows.vs2017:
+    stage: build
+    script:
+        - 'if exist output rmdir /s /q output'
+        - 'cd external/libgltf'
+        - 'if exist build rmdir /s /q build'
+        - 'mkdir build && cd build'
+        - 'mkdir vs2017 && cd vs2017'
+        - 'call "%VS2017COMNTOOLS%VsDevCmd.bat"'
+        - 'mkdir win32 && cd win32'
+        - 'cmake -G "Visual Studio 15 2017" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="Win32"'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Debug" /p:Platform="Win32"'
+        - 'cd ../'
+        - 'mkdir win64 && cd win64'
+        - 'cmake -G "Visual Studio 15 2017 Win64" -DLIBGLTF_WITH_UNICODE=TRUE -DCUSTOM_OUT_PATH="%CD%\output" ../../../'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Release" /p:Platform="x64"'
+        - 'msbuild source\libgltf\libgltf.vcxproj /t:Build /p:Configuration="Debug" /p:Platform="x64"'
+        - 'cd ../'
+        - 'cd ../'
+        - 'cd ../'
+        - 'cd ../../'
+        - 'xcopy external\libgltf\build\vs2017\win32\output\lib\win32\Release\*.lib output\lib\win32\vs2017\Release\ /s /r /y'
+        - 'xcopy external\libgltf\build\vs2017\win32\output\lib\win32\Debug\*.lib output\lib\win32\vs2017\Debug\ /s /r /y'
+        - 'xcopy external\libgltf\build\vs2017\win64\output\lib\win64\Release\*.lib output\lib\win64\vs2017\Release\ /s /r /y'
+        - 'xcopy external\libgltf\build\vs2017\win64\output\lib\win64\Debug\*.lib output\lib\win64\vs2017\Debug\ /s /r /y'
+    artifacts:
+        name: "libgltf.windows.vs2017.%CI_PIPELINE_ID%.%CI_JOB_ID%"
+        expire_in: 1 month
+        paths:
+            - output\lib\*
+    tags:
+        - win32
+        - win64
+        - cmake
         - vs2017
 
 compile.linux:
@@ -221,7 +240,8 @@ package_ue4.10:
         - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
         - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
     dependencies:
-        - compile.windows
+        - compile.windows.vs2015
+        - compile.windows.vs2017
         - compile.linux
         - compile.macos
         - compile.android
@@ -270,7 +290,8 @@ package_ue4.16:
         - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
         - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
     dependencies:
-        - compile.windows
+        - compile.windows.vs2015
+        - compile.windows.vs2017
         - compile.linux
         - compile.macos
         - compile.android
@@ -319,7 +340,8 @@ package_ue4.19:
         - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
         - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
     dependencies:
-        - compile.windows
+        - compile.windows.vs2015
+        - compile.windows.vs2017
         - compile.linux
         - compile.macos
         - compile.android
