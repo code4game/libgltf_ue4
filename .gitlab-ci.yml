@@ -244,7 +244,7 @@ libgltf_ue4.10:
         - 'butler logout'
     artifacts:
         name: "$CI_JOB_NAME.$CI_PIPELINE_ID"
-        expire_in: 1 month
+        expire_in: 1 year
         paths:
             - $CI_JOB_NAME/*
     when: manual
@@ -293,7 +293,7 @@ libgltf_ue4.16:
         - 'butler logout'
     artifacts:
         name: "$CI_JOB_NAME.$CI_PIPELINE_ID"
-        expire_in: 1 month
+        expire_in: 1 year
         paths:
             - $CI_JOB_NAME/*
     when: manual
@@ -342,7 +342,7 @@ libgltf_ue4.19:
         - 'butler logout'
     artifacts:
         name: "$CI_JOB_NAME.$CI_PIPELINE_ID"
-        expire_in: 1 month
+        expire_in: 1 year
         paths:
             - $CI_JOB_NAME/*
     when: manual
