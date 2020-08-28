@@ -17,7 +17,7 @@ public class libgltf_ue4 : ModuleRules
         if ((Target.Platform == UnrealTargetPlatform.Win32) || (Target.Platform == UnrealTargetPlatform.Win64))
         {
             string PlatformName = "";
-#if UE_4_20_OR_LATER
+#if UE_4_23_OR_LATER
             if (Target.Platform == UnrealTargetPlatform.Win32)
             {
                 PlatformName = "win32";
