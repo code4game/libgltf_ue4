@@ -73,5 +73,6 @@ public class libgltf_ue4 : ModuleRules
         PublicIncludePaths.Add(IncludePath);
         PublicLibraryPaths.AddRange(LibPaths);
         PublicAdditionalLibraries.Add(LibFilePath);
+        PublicDefinitions.Add("LIBGLTF_CHARACTOR_ENCODING_IS_UTF8");
     }
 }
