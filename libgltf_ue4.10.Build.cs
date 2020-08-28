@@ -9,7 +9,7 @@ public class libgltf_ue4 : ModuleRules
     {
         Type = ModuleType.External;
 
-        string glTFPath = System.IO.Path.Combine(ModuleDirectory, "libgltf-0.1.5");
+        string glTFPath = System.IO.Path.Combine(ModuleDirectory, "libgltf-0.1.6");
         string IncludePath = System.IO.Path.Combine(glTFPath, "include");
         List<string> LibPaths = new List<string>();
         string LibFilePath = "";
@@ -27,8 +27,6 @@ public class libgltf_ue4 : ModuleRules
                 break;
             }
 
-            string VSName = "vs" + WindowsPlatform.GetVisualStudioCompilerVersionName();
-
             string TargetConfiguration = "Release";
             string TargetPostfix = "";
             if (Target.Configuration == UnrealTargetConfiguration.Debug)
@@ -37,7 +35,7 @@ public class libgltf_ue4 : ModuleRules
                 TargetPostfix = "d";
             }
 
-            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", PlatformName, VSName, TargetConfiguration));
+            LibPaths.Add(System.IO.Path.Combine(glTFPath, "lib", PlatformName, "vs2019", TargetConfiguration));
 
             LibFilePath = "libgltf" + TargetPostfix + ".lib";
         }
