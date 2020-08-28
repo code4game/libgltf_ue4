@@ -195,13 +195,13 @@ package_ue4.10:
         - 'cp README.md libgltf_ue4/'
         - 'cp LICENSE.md libgltf_ue4/'
         - 'cp libgltf_ue4.10.Build.cs libgltf_ue4/libgltf_ue4.Build.cs'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/include/libgltf/'
-        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
-        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/include/libgltf/'
+        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/lib/'
+        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.6/'
     dependencies:
         - compile.windows.vs2019
         - compile.linux
@@ -244,13 +244,13 @@ package_ue4.16:
         - 'cp README.md libgltf_ue4/'
         - 'cp LICENSE.md libgltf_ue4/'
         - 'cp libgltf_ue4.16.Build.cs libgltf_ue4/libgltf_ue4.Build.cs'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/include/libgltf/'
-        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
-        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/include/libgltf/'
+        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/lib/'
+        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.6/'
     dependencies:
         - compile.windows.vs2019
         - compile.linux
@@ -293,13 +293,13 @@ package_ue4.19:
         - 'cp README.md libgltf_ue4/'
         - 'cp LICENSE.md libgltf_ue4/'
         - 'cp libgltf_ue4.19.Build.cs libgltf_ue4/libgltf_ue4.Build.cs'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.5/'
-        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/include/libgltf/'
-        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.5/'
-        - 'mkdir -p libgltf_ue4/libgltf-0.1.5/lib/'
-        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.5/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/README.md libgltf_ue4/libgltf-0.1.6/'
+        - 'cp external/libgltf/LICENSE.md libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/include/libgltf/'
+        - 'cp -R external/libgltf/include/ libgltf_ue4/libgltf-0.1.6/'
+        - 'mkdir -p libgltf_ue4/libgltf-0.1.6/lib/'
+        - 'cp -R output/lib/ libgltf_ue4/libgltf-0.1.6/'
     dependencies:
         - compile.windows.vs2019
         - compile.linux
