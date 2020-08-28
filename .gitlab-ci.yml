@@ -106,7 +106,7 @@ compile.android:
         - 'cd external/libgltf'
         - 'mkdir build && cd build'
         - 'mkdir armeabi-v7a && cd armeabi-v7a'
-        - 'cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
+        - 'cmake -G "Ninja" -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_ARM_NEON=OFF -DANDROID_NDK=$ANDROID_NDK -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_TOOLCHAIN=clang ../../'
         - 'ninja'
         - 'cd ../'
         - 'mkdir armeabi-v7a-with-neon && cd armeabi-v7a-with-neon'
